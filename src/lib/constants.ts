@@ -21,12 +21,31 @@ export const CHANNEL_OPTIONS = [
   { value: "online", label: "Solo online" },
 ] as const
 
+export const DAY_OPTIONS = [
+  { value: "lunes", label: "Lunes" },
+  { value: "martes", label: "Martes" },
+  { value: "miercoles", label: "Miércoles" },
+  { value: "jueves", label: "Jueves" },
+  { value: "viernes", label: "Viernes" },
+  { value: "sabado", label: "Sábado" },
+  { value: "domingo", label: "Domingo" },
+] as const
+
 export const CATEGORY_ORDER = [
   "Supermercados",
-  "Comida",
-  "Farmacias",
+  "Restaurantes",
+  "Comida rapida",
+  "Cafeterias",
+  "Delivery",
+  "Retail",
+  "Moda",
+  "Tecnologia",
   "Viajes",
   "Combustible",
-  "Delivery",
   "Hogar",
+  "Salud",
+  "Belleza",
+  "Entretencion",
+  "Servicios",
+  "Otros",
 ]

@@ -25,7 +25,11 @@ export function formatBenefitValue(
     return `${benefit.benefitValue} cuotas`
   }
 
-  return `${benefit.benefitValue} pts`
+  if (benefit.benefitValueUnit === "points") {
+    return `${benefit.benefitValue} pts`
+  }
+
+  return benefit.benefitType === "cashback" ? "Cashback" : "Beneficio"
 }
 
 export function getConfidenceLabel(score: number) {

@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 
 import { BenefitCard } from "@/components/benefits/benefit-card"
 import { BenefitEmptyState } from "@/components/benefits/benefit-empty-state"
@@ -17,40 +17,64 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useBenefits } from "@/features/benefits/queries"
-import { SORT_OPTIONS } from "@/lib/constants"
+import { walletCardTypes, walletProviders } from "@/features/wallet/wallet-options"
+import { CHANNEL_OPTIONS, DAY_OPTIONS, SORT_OPTIONS } from "@/lib/constants"
 import { useFiltersStore } from "@/stores/filters-store"
 
 export function ExploreView({ initialSearch = "" }: { initialSearch?: string }) {
   const filters = useFiltersStore()
+  const setSearch = useFiltersStore((state) => state.setSearch)
+
+  useEffect(() => {
+    setSearch(initialSearch)
+  }, [initialSearch, setSearch])
+
   const params = useMemo(
     () => ({
-      search: filters.search || initialSearch,
+      search: filters.search,
       category: filters.category,
       providerSlugs: filters.providerSlugs,
       paymentTypes: filters.paymentTypes,
       channels: filters.channels,
+      days: filters.days,
+      minBenefitValue: filters.minBenefitValue,
       sortBy: filters.sortBy,
       todayOnly: filters.todayOnly,
     }),
     [
       filters.category,
       filters.channels,
+      filters.days,
+      filters.minBenefitValue,
       filters.paymentTypes,
       filters.providerSlugs,
       filters.search,
       filters.sortBy,
       filters.todayOnly,
-      initialSearch,
     ]
   )
 
   const { data = [], isLoading } = useBenefits(params)
+  const providerLabels = new Map<string, string>(
+    walletProviders.map((provider) => [provider.slug, provider.label])
+  )
+  const paymentLabels = new Map<string, string>(
+    walletCardTypes.map((type) => [type.value, type.label])
+  )
+  const channelLabels = new Map<string, string>(
+    CHANNEL_OPTIONS.map((channel) => [channel.value, channel.label])
+  )
+  const dayLabels = new Map<string, string>(
+    DAY_OPTIONS.map((day) => [day.value, day.label])
+  )
   const activeFilters = [
     filters.todayOnly ? "Hoy" : null,
+    filters.minBenefitValue ? `Desde ${filters.minBenefitValue}%` : null,
     filters.category,
-    ...filters.providerSlugs,
-    ...filters.paymentTypes,
-    ...filters.channels,
+    ...filters.providerSlugs.map((provider) => providerLabels.get(provider) ?? provider),
+    ...filters.paymentTypes.map((payment) => paymentLabels.get(payment) ?? payment),
+    ...filters.channels.map((channel) => channelLabels.get(channel) ?? channel),
+    ...filters.days.map((day) => dayLabels.get(day) ?? day),
   ].filter(Boolean) as string[]
 
   return (
@@ -63,8 +87,9 @@ export function ExploreView({ initialSearch = "" }: { initialSearch?: string }) 
         <div className="sticky top-20 z-20 space-y-4 rounded-[30px] border border-slate-200/80 bg-white/90 p-4 shadow-sm backdrop-blur">
           <BenefitSearchBar
             defaultValue={initialSearch}
-            onSearch={filters.setSearch}
+            onSearch={setSearch}
             placeholder="Busca supermercados, delivery, viajes o un comercio"
+            showLiveResults
           />
 
           <div className="flex flex-wrap items-center gap-2">

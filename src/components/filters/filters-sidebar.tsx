@@ -6,7 +6,7 @@ import { FilterChip } from "@/components/filters/filter-chip"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { walletCardTypes, walletProviders } from "@/features/wallet/wallet-options"
-import { CATEGORY_ORDER, CHANNEL_OPTIONS } from "@/lib/constants"
+import { CATEGORY_ORDER, CHANNEL_OPTIONS, DAY_OPTIONS } from "@/lib/constants"
 import { useFiltersStore } from "@/stores/filters-store"
 
 export function FiltersSidebar() {
@@ -42,6 +42,46 @@ export function FiltersSidebar() {
                     filters.category === category ? undefined : category
                   )
                 }
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <div className="flex items-center justify-between gap-3">
+            <h3 className="text-sm font-semibold text-slate-900">Descuento mínimo</h3>
+            <span className="text-sm font-medium text-slate-500">
+              {filters.minBenefitValue ?? 0}%
+            </span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="60"
+            step="5"
+            value={filters.minBenefitValue ?? 0}
+            onChange={(event) => {
+              const value = Number(event.target.value)
+              filters.setMinBenefitValue(value > 0 ? value : undefined)
+            }}
+            className="h-2 w-full cursor-pointer appearance-none rounded-full bg-slate-200 accent-slate-950"
+            aria-label="Descuento mínimo"
+          />
+          <div className="flex justify-between text-xs text-slate-400">
+            <span>Todos</span>
+            <span>60%+</span>
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h3 className="text-sm font-semibold text-slate-900">Día de descuento</h3>
+          <div className="flex flex-wrap gap-2">
+            {DAY_OPTIONS.map((day) => (
+              <FilterChip
+                key={day.value}
+                label={day.label}
+                active={filters.days.includes(day.value)}
+                onClick={() => filters.toggleDay(day.value)}
               />
             ))}
           </div>

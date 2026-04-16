@@ -1,4 +1,5 @@
 import { mockBenefits } from "@/features/benefits/mock-data"
+import { getBenefitRelevanceScore } from "@/features/benefits/ranking"
 import { apiFetch } from "@/lib/api"
 import { Benefit, BenefitSearchParams, benefitSchema } from "@/types/benefit"
 
@@ -33,9 +34,28 @@ function applySearchFilters(benefits: Benefit[], params: BenefitSearchParams = {
       params.paymentTypes.some((method) => benefit.paymentMethods.includes(method))
     const matchesChannel =
       !params.channels?.length || params.channels.includes(benefit.channel)
+    const matchesDays =
+      !params.days?.length ||
+      benefit.days.includes("Todos los dias") ||
+      params.days.some((day) =>
+        benefit.days
+          .map((value) =>
+            value
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase()
+          )
+          .includes(day)
+      )
+    const matchesMinDiscount =
+      params.minBenefitValue == null ||
+      (["discount", "cashback"].includes(benefit.benefitType) &&
+        benefit.benefitValueUnit === "percentage" &&
+        benefit.benefitValue >= params.minBenefitValue)
     const matchesToday =
       !params.todayOnly ||
       benefit.days.includes("Todos los días") ||
+      benefit.days.includes("Todos los dias") ||
       benefit.days.includes(todayName)
 
     return (
@@ -44,20 +64,30 @@ function applySearchFilters(benefits: Benefit[], params: BenefitSearchParams = {
       matchesProviders &&
       matchesPayment &&
       matchesChannel &&
+      matchesDays &&
+      matchesMinDiscount &&
       matchesToday
     )
   })
 
   return filtered.sort((left, right) => {
-    if (params.sortBy === "discount") return right.benefitValue - left.benefitValue
+    const leftDiscount =
+      ["discount", "cashback"].includes(left.benefitType) &&
+      left.benefitValueUnit === "percentage"
+        ? left.benefitValue
+        : 0
+    const rightDiscount =
+      ["discount", "cashback"].includes(right.benefitType) &&
+      right.benefitValueUnit === "percentage"
+        ? right.benefitValue
+        : 0
+
+    if (params.sortBy === "discount") return rightDiscount - leftDiscount
     if (params.sortBy === "ending") {
       return new Date(left.validUntil).getTime() - new Date(right.validUntil).getTime()
     }
 
-    return (
-      right.benefitValue * right.confidenceScore -
-      left.benefitValue * left.confidenceScore
-    )
+    return getBenefitRelevanceScore(right) - getBenefitRelevanceScore(left)
   })
 }
 
@@ -99,6 +129,10 @@ export async function searchBenefits(params: BenefitSearchParams = {}) {
     params.providerSlugs?.forEach((value) => query.append("providerSlug", value))
     params.paymentTypes?.forEach((value) => query.append("paymentMethod", value))
     params.channels?.forEach((value) => query.append("channel", value))
+    params.days?.forEach((value) => query.append("day", value))
+    if (params.minBenefitValue != null) {
+      query.set("minBenefitValue", String(params.minBenefitValue))
+    }
     if (params.sortBy) query.set("sortBy", params.sortBy)
     if (params.todayOnly) query.set("todayOnly", "true")
 

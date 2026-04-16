@@ -1,12 +1,18 @@
 import { BenefitCard } from "@/components/benefits/benefit-card"
+import {
+  isBenefitAvailableToday,
+  sortBenefitsByRelevance,
+} from "@/features/benefits/ranking"
 import { Benefit } from "@/types/benefit"
 
 export function TodayBenefitsSection({ benefits }: { benefits: Benefit[] }) {
-  const featured = benefits.slice(0, 4)
+  const featured = sortBenefitsByRelevance(
+    benefits.filter(isBenefitAvailableToday)
+  ).slice(0, 15)
 
   return (
     <section className="space-y-5">
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col justify-between gap-3 md:flex-row md:items-end">
         <div>
           <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
             Ranking rápido
@@ -16,13 +22,13 @@ export function TodayBenefitsSection({ benefits }: { benefits: Benefit[] }) {
           </h2>
         </div>
         <p className="max-w-md text-sm text-slate-500">
-          Priorizados por ahorro visible, confianza de la fuente y claridad de condiciones.
+          Solo descuentos vigentes hoy, priorizados por consumo masivo, comida rápida y ahorro visible.
         </p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
         {featured.map((benefit) => (
-          <BenefitCard key={benefit.id} benefit={benefit} />
+          <BenefitCard key={benefit.id} benefit={benefit} variant="compact" />
         ))}
       </div>
     </section>
