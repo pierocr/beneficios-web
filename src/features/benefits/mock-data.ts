@@ -8,12 +8,12 @@ export const mockBenefits: Benefit[] = [
     merchantName: "Avatar Sushi",
     merchantCanonicalName: "Avatar Sushi",
     merchantSlug: "avatar-sushi",
-    categoryName: "Comida",
-    title: "30% de descuento en Avatar Sushi pagando con tarjetas Santander",
+    categoryName: "Restaurantes",
+    title: "40% de descuento en Avatar Sushi pagando con tarjetas Santander",
     benefitType: "discount",
-    benefitValue: 30,
+    benefitValue: 40,
     benefitValueUnit: "percentage",
-    days: ["Lunes", "Martes"],
+    days: ["Todos los días"],
     channel: "ambos",
     paymentMethods: ["Crédito", "Débito"],
     capAmount: 12000,
@@ -24,13 +24,16 @@ export const mockBenefits: Benefit[] = [
     validationStatus: "validated",
     validUntil: "2026-05-31",
     lastUpdated: "2026-04-14",
-    summary: "Ideal para salidas de inicio de semana con tope visible y cobertura presencial u online directa.",
+    summary: "Ideal para salidas de inicio de semana con alto descuento, tope visible y cobertura presencial u online directa.",
     conditions: [
       "Aplica pagando directamente en la caja o sitio oficial del comercio.",
       "No aplica para compras vía marketplaces o gift cards.",
       "Tope mensual por cliente.",
     ],
-    featuredTag: "Mejor hoy",
+    featuredTag: "Señal del día",
+    imageUrl:
+      "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1200&q=80",
+    regions: ["Metropolitana", "Valparaíso", "Biobío"],
   },
   {
     id: "bci-jumbo",
@@ -62,6 +65,7 @@ export const mockBenefits: Benefit[] = [
       "Tope de abono mensual por RUT.",
     ],
     featuredTag: null,
+    regions: ["Metropolitana", "Valparaíso", "Biobío", "Coquimbo"],
   },
   {
     id: "banco-chile-cruz-verde",
@@ -93,6 +97,9 @@ export const mockBenefits: Benefit[] = [
       "Tope mensual total por cliente.",
     ],
     featuredTag: null,
+    imageUrl:
+      "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=1200&q=80",
+    regions: ["Nacional"],
   },
   {
     id: "falabella-starbucks",
@@ -101,10 +108,10 @@ export const mockBenefits: Benefit[] = [
     merchantName: "Starbucks",
     merchantCanonicalName: "Starbucks",
     merchantSlug: "starbucks",
-    categoryName: "Comida",
-    title: "30% de descuento en Starbucks con CMR",
+    categoryName: "Cafeterias",
+    title: "40% de descuento en Starbucks con CMR",
     benefitType: "discount",
-    benefitValue: 30,
+    benefitValue: 40,
     benefitValueUnit: "percentage",
     days: ["Jueves"],
     channel: "ambos",
@@ -124,6 +131,9 @@ export const mockBenefits: Benefit[] = [
       "Aplican locales adheridos.",
     ],
     featuredTag: null,
+    imageUrl:
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",
+    regions: ["Metropolitana", "Valparaíso"],
   },
   {
     id: "scotia-copec",
@@ -155,6 +165,7 @@ export const mockBenefits: Benefit[] = [
       "Solo pago presencial en surtidor o caja.",
     ],
     featuredTag: null,
+    regions: ["Nacional"],
   },
   {
     id: "itau-latam",
@@ -186,6 +197,7 @@ export const mockBenefits: Benefit[] = [
       "Tope por transacción.",
     ],
     featuredTag: null,
+    regions: ["Nacional"],
   },
   {
     id: "cencosud-pedidosya",
@@ -217,6 +229,7 @@ export const mockBenefits: Benefit[] = [
       "Puede variar por ciudad o por comercio.",
     ],
     featuredTag: null,
+    regions: ["Metropolitana", "Valparaíso", "Biobío"],
   },
   {
     id: "tenpo-easy",
@@ -248,6 +261,7 @@ export const mockBenefits: Benefit[] = [
       "Debe pagarse con tarjeta Tenpo activada.",
     ],
     featuredTag: null,
+    regions: ["Nacional"],
   },
   {
     id: "santander-jumbo",
@@ -279,6 +293,7 @@ export const mockBenefits: Benefit[] = [
       "Tope mensual por cliente.",
     ],
     featuredTag: null,
+    regions: ["Metropolitana", "Valparaíso", "Coquimbo"],
   },
   {
     id: "bci-pedidosya",
@@ -310,6 +325,7 @@ export const mockBenefits: Benefit[] = [
       "No aplica a propinas ni costos de servicio.",
     ],
     featuredTag: null,
+    regions: ["Nacional"],
   },
   {
     id: "banco-chile-latam",
@@ -341,6 +357,7 @@ export const mockBenefits: Benefit[] = [
       "Sujeto a stock de vuelos y rutas.",
     ],
     featuredTag: null,
+    regions: ["Nacional"],
   },
   {
     id: "falabella-cruz-verde",
@@ -372,5 +389,6 @@ export const mockBenefits: Benefit[] = [
       "Revisar locales participantes antes de comprar.",
     ],
     featuredTag: null,
+    regions: ["Metropolitana", "Biobío"],
   },
 ]

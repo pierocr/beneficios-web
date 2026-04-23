@@ -31,6 +31,15 @@ export const DAY_OPTIONS = [
   { value: "domingo", label: "Domingo" },
 ] as const
 
+export const REGION_OPTIONS = [
+  { value: "metropolitana", label: "Metropolitana" },
+  { value: "valparaiso", label: "Valparaíso" },
+  { value: "biobio", label: "Biobío" },
+  { value: "coquimbo", label: "Coquimbo" },
+  { value: "araucania", label: "Araucanía" },
+  { value: "nacional", label: "Todo Chile" },
+] as const
+
 export const CATEGORY_ORDER = [
   "Supermercados",
   "Restaurantes",

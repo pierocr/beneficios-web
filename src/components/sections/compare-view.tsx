@@ -9,10 +9,10 @@ import { rankBenefitsForComparison } from "@/features/compare"
 
 export function CompareView({ initialSearch = "" }: { initialSearch?: string }) {
   const [search, setSearch] = useState(initialSearch)
-  const { data = [] } = useBenefits()
+  const { data } = useBenefits({ limit: 120 })
   const ranked = useMemo(
-    () => rankBenefitsForComparison(data, search || initialSearch),
-    [data, initialSearch, search]
+    () => rankBenefitsForComparison(data?.items ?? [], search || initialSearch),
+    [data?.items, initialSearch, search]
   )
 
   return (

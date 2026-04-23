@@ -12,9 +12,16 @@ export const metadata: Metadata = {
 export default async function ExplorarPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>
+  searchParams: Promise<{
+    q?: string
+    day?: string
+    bank?: string
+    region?: string
+    min?: string
+  }>
 }) {
   const params = await searchParams
+  const minBenefitValue = params.min ? Number(params.min) : undefined
 
   return (
     <PageShell className="gap-6 py-8 md:py-10">
@@ -27,7 +34,15 @@ export default async function ExplorarPage({
           Filtra por rubro, banco, canal y medio de pago para ver rápidamente qué opción conviene más.
         </p>
       </div>
-      <ExploreView initialSearch={params.q || ""} />
+      <ExploreView
+        initialSearch={params.q || ""}
+        initialDay={params.day}
+        initialProviderSlug={params.bank}
+        initialRegion={params.region}
+        initialMinBenefitValue={
+          Number.isFinite(minBenefitValue) ? minBenefitValue : undefined
+        }
+      />
     </PageShell>
   )
 }

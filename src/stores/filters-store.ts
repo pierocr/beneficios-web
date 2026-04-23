@@ -11,6 +11,10 @@ type FiltersState = BenefitSearchParams & {
   days: string[]
   setSearch: (search: string) => void
   setCategory: (category?: string) => void
+  setDays: (days: string[]) => void
+  setPaymentTypes: (paymentTypes: string[]) => void
+  setProviderSlugs: (providerSlugs: string[]) => void
+  setRegion: (region?: string) => void
   setSortBy: (sortBy: NonNullable<BenefitSearchParams["sortBy"]>) => void
   toggleProvider: (providerSlug: string) => void
   togglePaymentType: (paymentType: string) => void
@@ -28,6 +32,7 @@ const initialState = {
   paymentTypes: [] as string[],
   channels: [] as Array<Benefit["channel"]>,
   days: [] as string[],
+  region: undefined,
   minBenefitValue: undefined,
   sortBy: "best" as const,
   todayOnly: false,
@@ -37,6 +42,10 @@ export const useFiltersStore = create<FiltersState>((set) => ({
   ...initialState,
   setSearch: (search) => set({ search }),
   setCategory: (category) => set({ category }),
+  setDays: (days) => set({ days }),
+  setPaymentTypes: (paymentTypes) => set({ paymentTypes }),
+  setProviderSlugs: (providerSlugs) => set({ providerSlugs }),
+  setRegion: (region) => set({ region }),
   setSortBy: (sortBy) => set({ sortBy }),
   toggleProvider: (providerSlug) =>
     set((state) => ({

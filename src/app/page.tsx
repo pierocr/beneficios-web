@@ -19,7 +19,7 @@ export default async function HomePage() {
 
   return (
     <PageShell className="gap-10 py-8 md:gap-14 md:py-10">
-      <HomeHero />
+      <HomeHero benefits={benefits} />
       <TodayBenefitsSection benefits={benefits} />
       <PopularCategoriesSection benefits={benefits} />
       <ProvidersSection benefits={benefits} />

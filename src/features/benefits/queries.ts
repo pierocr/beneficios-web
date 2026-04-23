@@ -1,10 +1,9 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
 
 import {
   getBenefitByMerchant,
-  getBenefits,
   searchBenefits,
 } from "@/features/benefits/api"
 import { BenefitSearchParams } from "@/types/benefit"
@@ -12,9 +11,10 @@ import { BenefitSearchParams } from "@/types/benefit"
 export function useBenefits(params: BenefitSearchParams = {}) {
   return useQuery({
     queryKey: ["benefits", params],
-    queryFn: () =>
-      Object.keys(params).length > 0 ? searchBenefits(params) : getBenefits(),
+    queryFn: ({ signal }) => searchBenefits(params, { signal }),
+    placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 15,
   })
 }
 
@@ -24,5 +24,6 @@ export function useBenefitDetail(providerSlug: string, merchantSlug: string) {
     queryFn: () => getBenefitByMerchant(providerSlug, merchantSlug),
     enabled: Boolean(providerSlug && merchantSlug),
     staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 15,
   })
 }

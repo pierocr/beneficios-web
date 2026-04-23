@@ -53,6 +53,7 @@ export function BenefitMedia({
           alt={`Imagen de ${merchantName}`}
           fill
           priority={priority}
+          unoptimized
           sizes="(max-width: 768px) 100vw, 420px"
           onError={() => setHasImageError(true)}
           className={cn("absolute inset-0 size-full object-cover", imageClassName)}

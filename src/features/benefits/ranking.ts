@@ -83,7 +83,11 @@ function getPercentageValue(benefit: Benefit) {
   return 0
 }
 
-function isFoodCategory(categoryName: string) {
+export function getBenefitPercentageValue(benefit: Benefit) {
+  return getPercentageValue(benefit)
+}
+
+export function isFoodCategory(categoryName: string) {
   const category = normalizeText(categoryName)
 
   return [
@@ -94,6 +98,28 @@ function isFoodCategory(categoryName: string) {
     "pizza",
     "restaurante",
   ].some((keyword) => category.includes(keyword))
+}
+
+export function isMassFoodBenefit(benefit: Benefit) {
+  const category = normalizeText(benefit.categoryName)
+
+  return (
+    isFastFoodBenefit(benefit) ||
+    isFoodCategory(benefit.categoryName) ||
+    category.includes("supermercado")
+  )
+}
+
+export function isDailyFoodRecommendation(benefit: Benefit) {
+  const category = normalizeText(benefit.categoryName)
+  const discount = getPercentageValue(benefit)
+  const isTargetCategory =
+    isFastFoodBenefit(benefit) ||
+    category.includes("comida rapida") ||
+    category.includes("restaurante") ||
+    category.includes("cafeteria")
+
+  return isTargetCategory && discount >= 35
 }
 
 function getBenefitPriorityTier(benefit: Benefit) {
@@ -149,5 +175,16 @@ export function sortBenefitsByRelevance(benefits: Benefit[]) {
     if (scoreDifference !== 0) return scoreDifference
 
     return getPercentageValue(right) - getPercentageValue(left)
+  })
+}
+
+export function sortTodayBenefitsByRecommendation(benefits: Benefit[]) {
+  return [...benefits].sort((left, right) => {
+    const discountDifference =
+      getPercentageValue(right) - getPercentageValue(left)
+
+    if (discountDifference !== 0) return discountDifference
+
+    return getBenefitRelevanceScore(right) - getBenefitRelevanceScore(left)
   })
 }

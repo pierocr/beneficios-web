@@ -35,6 +35,7 @@ export const benefitSchema = z.preprocess((value) => {
   conditions: z.array(z.string()),
   featuredTag: z.string().nullable().optional(),
   imageUrl: z.string().min(1).nullable().optional(),
+  regions: z.array(z.string()).optional(),
 }))
 
 export type Benefit = z.infer<typeof benefitSchema>
@@ -46,7 +47,18 @@ export type BenefitSearchParams = {
   paymentTypes?: string[]
   channels?: Array<Benefit["channel"]>
   days?: string[]
+  region?: string
   minBenefitValue?: number
   sortBy?: "best" | "discount" | "ending"
   todayOnly?: boolean
+  page?: number
+  limit?: number
+}
+
+export type BenefitsSearchResult = {
+  items: Benefit[]
+  page: number
+  limit: number
+  total: number
+  hasMore: boolean
 }

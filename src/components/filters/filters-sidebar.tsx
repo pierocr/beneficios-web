@@ -6,7 +6,7 @@ import { FilterChip } from "@/components/filters/filter-chip"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { walletCardTypes, walletProviders } from "@/features/wallet/wallet-options"
-import { CATEGORY_ORDER, CHANNEL_OPTIONS, DAY_OPTIONS } from "@/lib/constants"
+import { CATEGORY_ORDER, CHANNEL_OPTIONS, DAY_OPTIONS, REGION_OPTIONS } from "@/lib/constants"
 import { useFiltersStore } from "@/stores/filters-store"
 
 export function FiltersSidebar() {
@@ -82,6 +82,24 @@ export function FiltersSidebar() {
                 label={day.label}
                 active={filters.days.includes(day.value)}
                 onClick={() => filters.toggleDay(day.value)}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section className="space-y-3">
+          <h3 className="text-sm font-semibold text-slate-900">Región</h3>
+          <div className="flex flex-wrap gap-2">
+            {REGION_OPTIONS.map((region) => (
+              <FilterChip
+                key={region.value}
+                label={region.label}
+                active={filters.region === region.value}
+                onClick={() =>
+                  filters.setRegion(
+                    filters.region === region.value ? undefined : region.value
+                  )
+                }
               />
             ))}
           </div>
