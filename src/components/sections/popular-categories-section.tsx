@@ -23,7 +23,7 @@ export function PopularCategoriesSection({ benefits }: { benefits: Benefit[] }) 
           Categorías populares
         </h2>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(230px,1fr))] gap-4">
         {items.map((item) => (
           <article
             key={item.category}

@@ -17,6 +17,18 @@ function normalizeText(text: string) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
+    .trim()
+}
+
+function tokenizeSearch(text: string) {
+  return Array.from(
+    new Set(
+      text
+        .split(/\s+/)
+        .map((term) => term.trim())
+        .filter((term) => term.length >= 2)
+    )
+  )
 }
 
 function applySearchFilters(benefits: Benefit[], params: BenefitSearchParams = {}) {
@@ -28,14 +40,23 @@ function applySearchFilters(benefits: Benefit[], params: BenefitSearchParams = {
     const haystack = [
       benefit.bankName,
       benefit.merchantName,
+      benefit.merchantCanonicalName,
+      benefit.merchantSlug,
       benefit.categoryName,
       benefit.title,
+      benefit.summary,
+      benefit.termsText,
     ]
       .join(" ")
-      .toLowerCase()
+    const normalizedHaystack = normalizeText(haystack)
+    const normalizedSearch = normalizeText(params.search ?? "")
+    const searchTerms = tokenizeSearch(normalizedSearch)
 
     const matchesSearch =
-      !params.search || haystack.includes(params.search.toLowerCase())
+      !normalizedSearch ||
+      normalizedHaystack.includes(normalizedSearch) ||
+      (searchTerms.length > 0 &&
+        searchTerms.every((term) => normalizedHaystack.includes(term)))
     const matchesCategory =
       !params.category || benefit.categoryName === params.category
     const matchesProviders =

@@ -22,7 +22,7 @@ import { DAY_OPTIONS, REGION_OPTIONS } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 import { Benefit, BenefitSearchParams } from "@/types/benefit"
 
-type SearchBarFilters = {
+export type SearchBarFilters = {
   day?: string
   providerSlug?: string
   region?: string
@@ -38,6 +38,7 @@ type BenefitSearchBarProps = {
   placeholder?: string
   redirectTo?: string
   onSearch?: (value: string) => void
+  onSubmitSearch?: (value: string, filters: SearchBarFilters) => void
   onFiltersChange?: (filters: SearchBarFilters) => void
   className?: string
   showLiveResults?: boolean
@@ -54,6 +55,7 @@ export function BenefitSearchBar({
   placeholder = "Busca por comercio, banco o categoría",
   redirectTo,
   onSearch,
+  onSubmitSearch,
   onFiltersChange,
   className,
   showLiveResults = false,
@@ -90,14 +92,18 @@ export function BenefitSearchBar({
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    onSearch?.(value)
-    onFiltersChange?.({
+    const filters = {
       day: day !== "any" ? day : undefined,
       providerSlug: providerSlug !== "any" ? providerSlug : undefined,
       region: region !== "any" ? region : undefined,
       minBenefitValue:
         minBenefitValue !== "any" ? Number(minBenefitValue) : undefined,
-    })
+    }
+
+    onSearch?.(value)
+    onFiltersChange?.(filters)
+    onSubmitSearch?.(value, filters)
+    setIsFocused(false)
 
     if (redirectTo) {
       const params = new URLSearchParams()
@@ -210,7 +216,7 @@ export function BenefitSearchBar({
     if (!shouldShowResults) return null
 
     return (
-      <div className="absolute top-[calc(100%+0.5rem)] right-0 left-0 z-30 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
+      <div className="absolute top-[calc(100%+0.5rem)] right-0 left-0 z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.14)]">
         {isLoadingResults ? (
           <div className="px-4 py-3 text-sm text-slate-500">Buscando...</div>
         ) : results.length === 0 ? (

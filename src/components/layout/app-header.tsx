@@ -2,14 +2,17 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Landmark, WalletCards } from "lucide-react"
+import { Search, WalletCards } from "lucide-react"
 
+import { GoogleAuthButton } from "@/components/layout/google-auth-button"
 import { Button } from "@/components/ui/button"
+import { APP_NAME, APP_TAGLINE } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 
 const navigation = [
   { href: "/", label: "Hoy" },
   { href: "/explorar", label: "Explorar" },
+  { href: "/mapa", label: "Mapa" },
   { href: "/comparar", label: "Comparar" },
   { href: "/favoritos", label: "Favoritos" },
   { href: "/billetera", label: "Mi billetera" },
@@ -21,16 +24,17 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/70 bg-white/75 backdrop-blur-xl">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-2xl bg-slate-950 text-white shadow-[0_12px_30px_rgba(15,23,42,0.16)]">
-            <Landmark className="size-5" />
+        <Link href="/" className="flex items-center gap-3" aria-label={`${APP_NAME}, inicio`}>
+          <span className="relative flex size-10 items-center justify-center rounded-2xl bg-slate-950 text-white shadow-[0_12px_30px_rgba(15,23,42,0.16)]">
+            <span className="absolute inset-1 rounded-xl border border-white/10" />
+            <Search className="relative size-5" strokeWidth={2.5} />
           </span>
           <div className="hidden sm:block">
             <div className="text-sm font-semibold tracking-tight text-slate-950">
-              Beneficios Chile
+              {APP_NAME}
             </div>
             <div className="text-xs text-slate-500">
-              Comparador bancario y fintech
+              {APP_TAGLINE}
             </div>
           </div>
         </Link>
@@ -55,15 +59,20 @@ export function AppHeader() {
           })}
         </nav>
 
-        <Button
-          asChild
-          className="hidden rounded-full bg-emerald-600 px-4 text-white shadow-sm hover:bg-emerald-500 md:inline-flex"
-        >
-          <Link href="/billetera">
-            <WalletCards className="size-4" />
-            Ordenar por mi billetera
-          </Link>
-        </Button>
+        <div className="hidden items-center gap-2 md:flex">
+          <Button
+            asChild
+            className="rounded-full bg-emerald-600 px-4 text-white shadow-sm hover:bg-emerald-500"
+          >
+            <Link href="/billetera">
+              <WalletCards className="size-4" />
+              Ordenar por mi billetera
+            </Link>
+          </Button>
+          <GoogleAuthButton />
+        </div>
+
+        <GoogleAuthButton compact className="md:hidden" />
       </div>
     </header>
   )

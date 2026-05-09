@@ -56,12 +56,10 @@ export function isBenefitAvailableToday(benefit: Benefit) {
 export function getBenefitTodayLabel(benefit: Benefit) {
   if (benefit.days.some(isEveryday)) return "Todos los días"
 
-  return new Intl.DateTimeFormat("es-CL", {
-    timeZone: "America/Santiago",
-    weekday: "long",
-  })
-    .format(new Date())
-    .replace(/^\w/, (letter) => letter.toUpperCase())
+  const todayName = getTodayName()
+  const todayLabel = benefit.days.find((day) => normalizeText(day) === todayName)
+
+  return todayLabel ?? benefit.days.join(", ")
 }
 
 export function isFastFoodBenefit(benefit: Benefit) {

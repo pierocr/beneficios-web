@@ -1,4 +1,5 @@
-export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Beneficios Chile"
+export const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Luppa"
+export const APP_TAGLINE = "Salir más, gastar menos."
 
 export const QUICK_FILTERS = [
   "Hoy",

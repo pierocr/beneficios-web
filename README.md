@@ -2,6 +2,26 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Create `.env.local` with the API URL. Google login is optional; if the
+Supabase values are missing, the login button is hidden and the public site
+continues to work.
+
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:3001
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-public-anon-key
+```
+
+In Supabase Auth, enable Google as an OAuth provider and add the local redirect
+URL you use during development:
+
+```text
+http://localhost:3000/auth/callback
+```
+
+If Next uses another port, add that port too, for example
+`http://localhost:3002/auth/callback`.
+
 First, run the development server:
 
 ```bash
